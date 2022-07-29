@@ -1,0 +1,64 @@
+version: '3'
+services:
+  webdav:
+    build:
+      context: ./docker/webdav
+      dockerfile: ./Dockerfile
+    restart: always
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./htpasswd:/etc/nginx/htpasswd
+      - ./dist/:/var/www/html/
+      - ./media/:/media/
+    ports:
+        - "8080:8080"
+    links:
+      - ldap
+      - nginx-ldap-auth
+
+  nginx-ldap-auth:
+    image: bitnami/nginx-ldap-auth-daemon
+    restart: always
+    links:
+      - ldap
+
+  ldap:
+    image: mwaeckerlin/openldap
+    ports:
+      - "389:389"
+    volumes:
+      - ./docker./ldap/:/var/restore/
+    environment:
+      DOMAIN: example.com
+      DEBUG: 256
+      ACCESS_RULES: |
+        access to attrs=userPassword
+            by anonymous auth
+            by self write
+            by * none
+        access to *
+            by * read
+    restart: always
+    healthcheck:
+      test: "ldapsearch -x -b dc=example,dc=com cn > /dev/null"
+      interval: 30s
+      retries: 2
+      timeout: 2s
+
+  ldap-ui:
+    image: dnknth/ldap-ui
+    ports:
+      - "5000:5000"
+    links:
+      - ldap
+    environment:
+      LDAP_URL: "ldap://ldap/"
+      BASE_DN: "dc=example,dc=com"
+      BIND_DN: "cn=admin,dc=example,dc=com"
+      BIND_PASSWORD: "admin"
+    restart: always
+    healthcheck:
+      test: "wget -q -O /dev/null http://localhost:5000"
+      interval: 30s
+      retries: 2
+      timeout: 2s

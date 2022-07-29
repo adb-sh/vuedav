@@ -1,0 +1,32 @@
+# Entry 1: dc=example,dc=com
+dn: dc=example,dc=com
+dc: example
+o: Example
+objectclass: dcObject
+objectclass: top
+objectclass: organization
+
+dn: cn=admin,dc=example,dc=com
+cn: admin
+uid: admin
+userpassword: admin
+objectclass: organizationalRole
+objectclass: simpleSecurityObject
+objectclass: uidObject
+
+# Entry 2: ou=users,dc=example,dc=com
+dn: ou=users,dc=example,dc=com
+objectclass: organizationalUnit
+objectclass: top
+ou: users
+
+# Entry 3: cn=Test User,ou=users,dc=example,dc=com
+dn: cn=Test User,ou=users,dc=example,dc=com
+cn: Test User
+givenname: Test User
+objectclass: inetOrgPerson
+objectclass: uidObject
+objectclass: simpleSecurityObject
+sn: User
+uid: test
+userPassword: test
