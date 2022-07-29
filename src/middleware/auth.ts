@@ -1,8 +1,8 @@
-import { useWebdavStorage } from '@/store/webdav';
+import { useWebdavStore } from '@/store/webdav';
 import { Context } from '@/middleware/Context';
 
-export default function auth({ next, router }: Context) {
-  console.log('auth');
-  if (!useWebdavStorage().currentSession?.isActive) return router.push({ name: 'Login' });
+export const auth = ({ next }: Context) => {
+  if (!useWebdavStore().currentSession?.isActive)
+    return next({ name: 'Login' });
   return next();
-}
+};

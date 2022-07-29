@@ -1,30 +1,24 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </div>
-  <router-view />
+  <header
+    class="d-flex justify-content-between p-3 bg-darkmode-dark bg-light shadow"
+  >
+    <div>
+      <b class="mx-2">vuedav</b>
+      <router-link class="mx-2" to="/files">Files</router-link>
+    </div>
+    <div class="d-flex">
+      <DarkModeToggle class="mx-2" v-slot="{ state }">
+        <i v-if="state" class="bi-moon"></i>
+        <i v-else class="bi-sun"></i>
+      </DarkModeToggle>
+    </div>
+  </header>
+  <main class="container my-5">
+    <router-view />
+  </main>
+  <footer></footer>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
-</style>
+<script setup lang="ts">
+import DarkModeToggle from '@/components/DarkmodeToggle.vue';
+</script>

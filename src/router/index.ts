@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import Home from '../views/Home.vue';
-import auth from '@/middleware/auth';
-import log from '@/middleware/log';
+import { auth } from '@/middleware/auth';
 import { runMiddleware } from '@/lib/runMiddleware';
 
 const routes: Array<RouteRecordRaw> = [
@@ -22,9 +21,6 @@ const routes: Array<RouteRecordRaw> = [
     path: '/login',
     name: 'Login',
     component: () => import('../views/Login.vue'),
-    meta: {
-      middleware: [log],
-    },
   },
 ];
 

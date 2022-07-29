@@ -1,0 +1,16 @@
+// Your variable overrides
+//$body-bg: #222;
+//$body-color: #222;
+$dark-body-bg: #222;
+
+// Bootstrap and its default variables
+@import "~bootstrap/scss/bootstrap";
+@import "~bootstrap-darkmode/css/darktheme";
+
+html, body {
+}
+
+#app{
+  font-family: monospace;
+  //color: #fff;
+}

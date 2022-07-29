@@ -11,31 +11,29 @@ export type Session = {
   isActive: boolean;
 };
 
-export const useWebdavStorage = defineStore('auth', {
+export const useWebdavStore = defineStore('auth', {
   state: () => ({
     sessions: [] as Array<Session>,
     currentSession: null as null | Session,
   }),
   actions: {
-    login({ user, pass }: Auth): Promise<Session> {
-      return new Promise((resolve, reject) => {
-        try {
-          const client = createClient(
-            process.env.VUE_APP_ROOT_WEBDAV as string,
-            {
-              authType: AuthType.Digest,
-              username: user as string,
-              password: pass as string,
-            }
-          ) as WebDAVClient;
-          const session = { client, isActive: true } as Session;
-          this.sessions.push(session);
-          this.currentSession = session;
-          resolve(session);
-        } catch (e) {
-          reject(e);
-        }
-      });
+    async login({ user, pass }: Auth): Promise<Session> {
+      try {
+        const client = createClient(
+          `${process.env.VUE_APP_ROOT_WEBDAV ?? ''}/api/dav/files/` as string,
+          {
+            authType: AuthType.Password,
+            username: user as string,
+            password: pass as string,
+          }
+        ) as WebDAVClient;
+        const session = { client, isActive: true } as Session;
+        this.sessions.push(session);
+        this.currentSession = session;
+        return session;
+      } catch (e) {
+        throw 'login failed';
+      }
     },
   },
 });
